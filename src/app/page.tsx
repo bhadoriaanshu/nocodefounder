@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { 
   CheckCircle2, 
   Star, 
@@ -61,35 +60,11 @@ const sneakPeek = [
 ];
 
 export default function Home() {
-  const [isDismissed, setIsDismissed] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  // Dismiss video permanently as soon as the user scrolls
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20 && !isDismissed) {
-        dismissVideo();
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isDismissed]);
-
-  const dismissVideo = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-    }
-    setIsDismissed(true);
-  };
-
   return (
     <div className="min-h-screen font-sans selection:bg-magenta selection:text-ivory">
       
-      {/* --- NAVBAR (Hidden during video, slides in when dismissed) --- */}
-      <nav className={`fixed top-0 inset-x-0 z-50 bg-white/60 backdrop-blur-xl border-b border-white/40 shadow-sm transition-all duration-700 ${
-        !isDismissed ? 'opacity-0 -translate-y-full pointer-events-none' : 'opacity-100 translate-y-0'
-      }`}>
+      {/* --- NAVBAR --- */}
+      <nav className="fixed top-0 inset-x-0 z-50 bg-white/60 backdrop-blur-xl border-b border-white/40 shadow-sm transition-all duration-700 opacity-100 translate-y-0">
         <div className="max-w-6xl mx-auto px-6 h-[75px] flex items-center justify-between">
           <div className="font-serif font-bold text-2xl tracking-tight text-black flex items-center gap-2">
             NoCode<span className="font-sans font-normal text-xl italic text-black/60">Founder</span>
@@ -102,30 +77,6 @@ export default function Home() {
           </Link>
         </div>
       </nav>
-
-      {/* --- FLOATING VIDEO OVERLAY (100% Full Screen Edge-to-Edge) --- */}
-      <AnimatePresence>
-        {!isDismissed && (
-          <motion.div 
-            key="video-overlay"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-50 w-screen h-screen bg-black overflow-hidden flex items-center justify-center pointer-events-auto"
-          >
-            <video
-              ref={videoRef}
-              autoPlay
-              muted
-              playsInline
-              preload="auto"
-              onEnded={dismissVideo}
-              className="w-full h-full object-cover"
-              src="/hero-video.mp4"
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* --- COMBINED HERO & SOCIAL PROOF (Sticky Layer - z-10) --- */}
       <div className="sticky top-0 z-10 bg-white min-h-screen flex flex-col justify-center border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
