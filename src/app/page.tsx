@@ -60,6 +60,110 @@ const sneakPeek = [
 ];
 
 export default function Home() {
+  const loadRazorpay = (): Promise<boolean> => {
+    return new Promise((resolve) => {
+      if (typeof window !== "undefined" && (window as any).Razorpay) {
+        resolve(true);
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const handleCheckout = async (btnId: string) => {
+    try {
+      const btn = document.getElementById(btnId) as HTMLButtonElement | HTMLAnchorElement;
+      if (!btn) return;
+      
+      const originalText = btn.innerText;
+      btn.innerText = "Processing...";
+      if ('disabled' in btn) btn.disabled = true;
+      
+      const couponEl = document.getElementById("couponCode") as HTMLInputElement;
+      const coupon = couponEl ? couponEl.value.trim().toLowerCase() : "";
+      
+      // 1. Create order
+      const res = await fetch('/api/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: 99, coupon })
+      });
+      const data = await res.json();
+      
+      if (data.isFree && data.downloadUrl) {
+         window.location.href = data.downloadUrl;
+         return;
+      }
+
+      if (!data.success) {
+         alert('Failed to create order: ' + (data.error || 'Unknown error'));
+         btn.innerText = originalText;
+         if ('disabled' in btn) btn.disabled = false;
+         return;
+      }
+
+      // Ensure Razorpay SDK is loaded
+      const isLoaded = await loadRazorpay();
+      if (!isLoaded) {
+        alert('Could not load payment gateway. Please check your internet connection.');
+        btn.innerText = originalText;
+        if ('disabled' in btn) btn.disabled = false;
+        return;
+      }
+
+      // 2. Open Razorpay Widget
+      const options = {
+        key: "rzp_live_TUpX0sFML2vjqy",
+        amount: data.amount,
+        currency: data.currency || "INR",
+        name: "No Code Founder",
+        description: "30 Micro SaaS Playbook",
+        order_id: data.orderId,
+        handler: async function (response: any) {
+          btn.innerText = "Verifying...";
+          const verifyRes = await fetch('/api/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            })
+          });
+          const verifyData = await verifyRes.json();
+          if (verifyData.success) {
+            window.location.href = verifyData.downloadUrl;
+          } else {
+            alert("Payment verification failed: " + (verifyData.error || 'Please contact support'));
+            btn.innerText = originalText;
+            if ('disabled' in btn) btn.disabled = false;
+          }
+        },
+        theme: { color: "#121C30" }
+      };
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open();
+      
+      rzp.on('payment.failed', function (resp: any) {
+         alert("Payment failed: " + (resp.error?.description || "Cancelled"));
+         btn.innerText = originalText;
+         if ('disabled' in btn) btn.disabled = false;
+      });
+    } catch (err: any) {
+      console.error(err);
+      alert("An error occurred: " + (err?.message || err));
+      const btn = document.getElementById(btnId) as HTMLButtonElement | HTMLAnchorElement;
+      if (btn) {
+        btn.innerText = "Buy Now";
+        if ('disabled' in btn) btn.disabled = false;
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen font-sans selection:bg-magenta selection:text-ivory">
       
@@ -69,106 +173,107 @@ export default function Home() {
           <div className="font-serif font-bold text-2xl tracking-tight text-black flex items-center gap-2">
             NoCode<span className="font-sans font-normal text-xl italic text-black/60">Founder</span>
           </div>
-          <Link 
-            href="#pricing" 
-            className="bg-white hover:bg-gray-50 text-black border border-black/10 text-sm font-medium py-2.5 px-6 rounded-full transition-all shadow-sm"
+          <button 
+            id="navBuyBtn"
+            onClick={() => handleCheckout("navBuyBtn")}
+            className="bg-white hover:bg-gray-50 text-black border border-black/10 text-sm font-medium py-2.5 px-6 rounded-full transition-all shadow-sm cursor-pointer"
           >
             Get Playbook
-          </Link>
+          </button>
         </div>
       </nav>
 
-      {/* --- COMBINED HERO & SOCIAL PROOF (Sticky Layer - z-10) --- */}
-      <div className="sticky top-0 z-10 bg-white min-h-screen flex flex-col justify-center border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
-        {/* --- HERO SECTION --- (White Background) */}
-        <section className="relative pt-32 pb-16 lg:pt-36 lg:pb-20 bg-white overflow-hidden">
-          {/* Soft decorative color washes */}
-          <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-golden/40 rounded-full blur-[100px] pointer-events-none"></div>
-          <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-ivory/60 rounded-full blur-[100px] pointer-events-none"></div>
+      {/* --- HERO SECTION --- (White Background) */}
+      <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 bg-white overflow-hidden border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+        {/* Soft decorative color washes */}
+        <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-golden/40 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-ivory/60 rounded-full blur-[100px] pointer-events-none"></div>
 
-          <div className="max-w-6xl mx-auto px-6 relative z-10">
-            <div className="flex flex-col lg:flex-row items-center gap-16">
-              
-              <motion.div 
-                initial="hidden" animate="visible" variants={stagger}
-                className="lg:w-1/2 text-center lg:text-left"
-              >
-                <motion.div variants={fadeUp} className="flex items-center justify-center lg:justify-start gap-3 mb-8 bg-cream/60 border border-golden/20 w-fit mx-auto lg:mx-0 px-5 py-2 rounded-full backdrop-blur-sm shadow-sm">
-                  <div className="flex" style={{ color: "#FBD54B" }}>
-                    {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}
-                  </div>
-                  <span className="text-brown text-xs font-semibold tracking-wider uppercase">Trusted by 2,500+ Founders</span>
-                </motion.div>
-                
-                <motion.h1 variants={fadeUp} className="text-5xl lg:text-7xl font-serif text-navy tracking-tight mb-6 leading-[1.05]">
-                  Launch a Micro SaaS <br className="hidden lg:block"/>
-                  <span className="italic text-magenta">
-                    Without Coding.
-                  </span>
-                </motion.h1>
-                
-                <motion.p variants={fadeUp} className="text-lg lg:text-xl text-brown mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light">
-                  Stop overthinking your ideas. Get 30 actionable Micro SaaS blueprints, the exact no-code stacks to build them, and a 4-week sprint to your first paying customer.
-                </motion.p>
-                
-                <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center gap-6">
-                  <Link 
-                    href="#pricing" 
-                    style={{ backgroundColor: "#F2CAD5" }}
-                    className="w-full sm:w-auto text-black border border-black/10 font-medium text-lg py-4 px-8 rounded-2xl flex items-center justify-center shadow-xl shadow-black/5 transition-all hover:-translate-y-1 hover:brightness-105"
-                  >
-                    Get the Playbook - ₹ 99
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                  </Link>
-                  <p className="text-brown text-sm font-medium flex items-center gap-2">
-                    <ShieldCheck className="w-4 h-4 text-green" /> 100% Risk-Free
-                  </p>
-                </motion.div>
+        <div className="max-w-6xl mx-auto px-6 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center gap-16">
+            
+            <motion.div 
+              initial="hidden" animate="visible" variants={stagger}
+              className="lg:w-1/2 text-center lg:text-left"
+            >
+              <motion.div variants={fadeUp} className="flex items-center justify-center lg:justify-start gap-3 mb-8 bg-cream/60 border border-golden/20 w-fit mx-auto lg:mx-0 px-5 py-2 rounded-full backdrop-blur-sm shadow-sm">
+                <div className="flex" style={{ color: "#FBD54B" }}>
+                  {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}
+                </div>
+                <span className="text-brown text-xs font-semibold tracking-wider uppercase">Trusted by 2,500+ Founders</span>
               </motion.div>
-
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95, y: 30 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ duration: 1.2, ease: "easeOut" }}
-                className="lg:w-1/2 relative"
-              >
-                <div className="absolute inset-0 bg-golden/30 blur-3xl rounded-full translate-y-10 translate-x-5 opacity-60"></div>
-                <motion.div 
-                  animate={{ y: [-15, 15, -15] }}
-                  transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-                  className="relative"
+              
+              <motion.h1 variants={fadeUp} className="text-5xl lg:text-7xl font-serif text-navy tracking-tight mb-6 leading-[1.05]">
+                Launch a Micro SaaS <br className="hidden lg:block"/>
+                <span className="italic text-magenta">
+                  Without Coding.
+                </span>
+              </motion.h1>
+              
+              <motion.p variants={fadeUp} className="text-lg lg:text-xl text-brown mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light">
+                Stop overthinking your ideas. Get 30 actionable Micro SaaS blueprints, the exact no-code stacks to build them, and a 4-week sprint to your first paying customer.
+              </motion.p>
+              
+              <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center gap-6">
+                <button 
+                  id="heroBuyBtn"
+                  onClick={() => handleCheckout("heroBuyBtn")}
+                  style={{ backgroundColor: "#F2CAD5" }}
+                  className="w-full sm:w-auto text-black border border-black/10 font-medium text-lg py-4 px-8 rounded-2xl flex items-center justify-center shadow-xl shadow-black/5 transition-all hover:-translate-y-1 hover:brightness-105 cursor-pointer"
                 >
-                  <Image 
-                    src="/new-cover.png" 
-                    alt="Book Cover" 
-                    width={500} height={700} 
-                    className="mx-auto rounded-xl shadow-2xl"
-                    priority
-                  />
-                </motion.div>
+                  Get the Playbook - ₹ 99
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </button>
+                <p className="text-brown text-sm font-medium flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-green" /> 100% Risk-Free
+                </p>
               </motion.div>
-              
-            </div>
-          </div>
-        </section>
+            </motion.div>
 
-        {/* --- SOCIAL PROOF LOGOS --- */}
-        <section className="py-10 bg-white relative border-y border-black/5">
-          <div className="max-w-6xl mx-auto px-6 text-center">
-            <p className="text-xs font-semibold text-brown uppercase tracking-widest mb-6">Build using industry-leading No-Code tools</p>
-            <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20">
-               {["Airtable", "Make", "Softr", "Stripe", "Webflow"].map((logo) => (
-                  <span key={logo} className="text-xl md:text-2xl font-serif text-navy mix-blend-multiply opacity-80">
-                    {logo}
-                  </span>
-               ))}
-            </div>
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="lg:w-1/2 relative"
+            >
+              <div className="absolute inset-0 bg-golden/30 blur-3xl rounded-full translate-y-10 translate-x-5 opacity-60"></div>
+              <motion.div 
+                animate={{ y: [-15, 15, -15] }}
+                transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
+                className="relative"
+              >
+                <Image 
+                  src="/new-cover.png" 
+                  alt="Book Cover" 
+                  width={500} height={700} 
+                  className="mx-auto rounded-xl shadow-2xl"
+                  priority
+                />
+              </motion.div>
+            </motion.div>
+            
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
+
+      {/* --- SOCIAL PROOF LOGOS (Centered) --- */}
+      <section className="py-16 bg-white relative border-y border-black/5 flex flex-col items-center justify-center text-center">
+        <div className="max-w-6xl mx-auto px-6 w-full flex flex-col items-center justify-center">
+          <p className="text-xs font-semibold text-brown uppercase tracking-widest mb-8 text-center">
+            Build using industry-leading No-Code tools
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 w-full">
+             {["Airtable", "Make", "Softr", "Stripe", "Webflow"].map((logo) => (
+                <span key={logo} className="text-2xl md:text-3xl font-serif text-navy/80 hover:text-navy transition-all duration-300">
+                  {logo}
+                </span>
+             ))}
+          </div>
+        </div>
+      </section>
 
       {/* --- THE AGITATION --- */}
-      <section className="py-24 min-h-screen flex flex-col justify-center bg-white relative sticky top-0 z-30 border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+      <section className="py-24 min-h-screen flex flex-col justify-center bg-white  z-30 border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
         <div className="absolute inset-0 bg-black/5 opacity-50"></div>
         <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={stagger}>
@@ -188,8 +293,8 @@ export default function Home() {
             ].map((item, i) => (
               <motion.div 
                 key={i}
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                initial={{ y: 30, scale: 0.95 }}
+                whileInView={{ y: 0, scale: 1 }}
                 whileHover={{ scale: 1.03, y: -8, rotate: i % 2 === 0 ? 1 : -1 }}
                 viewport={{ once: true }}
                 transition={{ type: "spring", stiffness: 200, damping: 15, delay: i * 0.1 }}
@@ -206,7 +311,7 @@ export default function Home() {
       </section>
 
       {/* --- WHAT'S INSIDE --- */}
-      <section className="py-24 min-h-screen flex flex-col justify-center bg-white relative overflow-hidden sticky top-0 z-40 border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+      <section className="py-24 min-h-screen flex flex-col justify-center bg-white overflow-hidden  z-40 border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
         <div className="max-w-6xl mx-auto px-6 relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-20">
             <h2 className="text-4xl md:text-5xl font-serif text-navy mb-6">Everything you need to launch.</h2>
@@ -241,7 +346,7 @@ export default function Home() {
       </section>
 
       {/* --- SNEAK PEEK --- */}
-      <section className="py-24 min-h-screen flex flex-col justify-center bg-white relative sticky top-0 z-50 border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+      <section className="py-24 min-h-screen flex flex-col justify-center bg-white  z-50 border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto mb-20">
             <h2 className="text-4xl md:text-5xl font-serif text-navy mb-6">A peek inside the playbook.</h2>
@@ -284,12 +389,12 @@ export default function Home() {
       </section>
 
       {/* --- PRICING SECTION --- */}
-      <section id="pricing" className="py-32 min-h-screen flex flex-col justify-center bg-white relative sticky top-0 z-60 border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+      <section id="pricing" className="py-32 min-h-screen flex flex-col justify-center bg-white  z-60 border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
         <div className="absolute inset-0 bg-black/5 opacity-10"></div>
         <div className="max-w-5xl mx-auto px-6 relative z-10">
           <motion.div 
-            initial={{ y: 30, opacity: 0, scale: 0.95 }}
-            whileInView={{ y: 0, opacity: 1, scale: 1 }}
+            initial={{ y: 30, scale: 0.95 }}
+            whileInView={{ y: 0, scale: 1 }}
             whileHover={{ scale: 1.01, y: -5 }}
             viewport={{ once: true }}
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
@@ -406,8 +511,7 @@ export default function Home() {
                       }
                     }}
                     id="buyBtn"
-                    style={{ backgroundColor: "#F2CAD5" }}
-                    className="block w-full text-black border border-black/10 font-medium py-4 px-6 rounded-2xl shadow-xl shadow-black/5 transition-all text-xl mt-2 hover:-translate-y-1 hover:brightness-105 disabled:opacity-70 disabled:hover:translate-y-0 cursor-pointer"
+                    className="bg-white block w-full text-black border border-black/10 font-bold py-4 px-6 rounded-2xl shadow-xl shadow-black/5 transition-all text-xl mt-2 hover:-translate-y-1 hover:brightness-105 disabled:opacity-70 disabled:hover:translate-y-0 cursor-pointer"
                   >
                     Buy Now
                   </button>
@@ -422,11 +526,23 @@ export default function Home() {
       </section>
 
       {/* --- FOOTER --- */}
-      <footer className="bg-white text-center relative z-70 border-t border-black/5 sticky top-0 shadow-[0_-10px_40px_rgba(0,0,0,0.03)] h-screen flex flex-col justify-end pb-12">
+      <footer className="bg-white text-center relative z-70 border-t border-black/5 py-12 pb-24 md:pb-12">
         <p className="text-brown/70 font-light text-sm tracking-wide">
           © {new Date().getFullYear()} No Code Founder. Build something beautiful.
         </p>
       </footer>
+
+      {/* --- MOBILE FLOATING BUY BUTTON --- */}
+      <div className="md:hidden fixed bottom-0 inset-x-0 p-4 bg-white/90 backdrop-blur-lg border-t border-black/10 z-[100]">
+        <button 
+          id="mobileBuyBtn"
+          onClick={() => handleCheckout("mobileBuyBtn")}
+          style={{ backgroundColor: "#F2CAD5" }}
+          className="w-full text-black border border-black/10 font-medium py-3.5 px-6 rounded-xl shadow-lg shadow-black/5 transition-all text-lg flex items-center justify-center cursor-pointer"
+        >
+          Buy Now - ₹ 99
+        </button>
+      </div>
     </div>
   );
 }
