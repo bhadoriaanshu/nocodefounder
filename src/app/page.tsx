@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { 
   CheckCircle2, 
   Star, 
@@ -16,12 +16,12 @@ import {
 } from "lucide-react";
 
 // --- ANIMATION VARIANTS ---
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 80, scale: 0.9 },
   visible: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 80, damping: 20 } }
 };
 
-const stagger = {
+const stagger: Variants = {
   visible: { transition: { staggerChildren: 0.2 } }
 };
 
