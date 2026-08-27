@@ -318,18 +318,100 @@ export default function Home() {
               
               {/* Checkout Side */}
               <div className="md:col-span-2 bg-white/5 p-12 lg:p-16 text-white flex flex-col justify-center items-center text-center relative border-t md:border-t-0 md:border-l border-white/10">
-                <div className="relative z-10 w-full">
-                  <div className="text-white/50 line-through text-xl font-medium mb-2">₹ 499</div>
-                  <div className="text-6xl font-serif mb-8 text-white">₹ 99</div>
+                <div className="relative z-10 w-full flex flex-col gap-4">
+                  <div>
+                    <div className="text-white/50 line-through text-xl font-medium mb-2">₹ 499</div>
+                    <div className="text-6xl font-serif text-white">₹ 99</div>
+                  </div>
                   
-                  <Link 
-                    href="/thank-you" 
+                  <input 
+                    type="text" 
+                    placeholder="Coupon Code" 
+                    id="couponCode"
+                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-white/50 text-center uppercase"
+                  />
+                  
+                  <button 
+                    onClick={async () => {
+                      try {
+                        const btn = document.getElementById("buyBtn") as HTMLButtonElement;
+                        btn.innerText = "Processing...";
+                        btn.disabled = true;
+                        
+                        const coupon = (document.getElementById("couponCode") as HTMLInputElement).value.toLowerCase();
+                        
+                        // 1. Create order
+                        const res = await fetch('/api/order', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ amount: 99, coupon })
+                        });
+                        const data = await res.json();
+                        
+                        if (data.isFree && data.downloadUrl) {
+                           window.location.href = data.downloadUrl;
+                           return;
+                        }
+
+                        if (!data.success) {
+                           alert('Failed to create order');
+                           btn.innerText = "Buy Now";
+                           btn.disabled = false;
+                           return;
+                        }
+
+                        // 2. Open Razorpay Widget
+                        const options = {
+                          key: "rzp_live_TUpX0sFML2vjqy",
+                          amount: data.amount,
+                          currency: data.currency,
+                          name: "No Code Founder",
+                          description: "30 Micro SaaS Playbook",
+                          order_id: data.orderId,
+                          handler: async function (response: any) {
+                            btn.innerText = "Verifying...";
+                            const verifyRes = await fetch('/api/verify', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_signature: response.razorpay_signature,
+                              })
+                            });
+                            const verifyData = await verifyRes.json();
+                            if (verifyData.success) {
+                              window.location.href = verifyData.downloadUrl;
+                            } else {
+                              alert("Payment verification failed");
+                              btn.innerText = "Buy Now";
+                              btn.disabled = false;
+                            }
+                          },
+                          theme: { color: "#F2CAD5" }
+                        };
+                        const rzp = new (window as any).Razorpay(options);
+                        rzp.open();
+                        
+                        rzp.on('payment.failed', function () {
+                           btn.innerText = "Buy Now";
+                           btn.disabled = false;
+                        });
+                      } catch (err) {
+                        console.error(err);
+                        alert("An error occurred");
+                        const btn = document.getElementById("buyBtn") as HTMLButtonElement;
+                        btn.innerText = "Buy Now";
+                        btn.disabled = false;
+                      }
+                    }}
+                    id="buyBtn"
                     style={{ backgroundColor: "#F2CAD5" }}
-                    className="block w-full text-black border border-black/10 font-medium py-5 px-6 rounded-2xl shadow-xl shadow-black/5 transition-all text-xl mb-4 hover:-translate-y-1 hover:brightness-105"
+                    className="block w-full text-black border border-black/10 font-medium py-4 px-6 rounded-2xl shadow-xl shadow-black/5 transition-all text-xl mt-2 hover:-translate-y-1 hover:brightness-105 disabled:opacity-70 disabled:hover:translate-y-0 cursor-pointer"
                   >
                     Buy Now
-                  </Link>
-                  <div className="flex items-center justify-center gap-2 text-white/50 text-sm font-medium">
+                  </button>
+                  <div className="flex items-center justify-center gap-2 text-white/50 text-sm font-medium mt-2">
                     <ShieldCheck className="w-4 h-4 text-green" /> Secure SSL Checkout
                   </div>
                 </div>
