@@ -16,8 +16,8 @@ export async function POST(req: Request) {
       cookies().set('payment_verified', 'true', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        path: '/api/download-pdf',
-        maxAge: 3600, // 1 hour
+        path: '/',
+        maxAge: 86400, // 24 hours
       });
       
       return NextResponse.json({

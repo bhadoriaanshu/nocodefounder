@@ -93,8 +93,8 @@ export default function Home() {
       });
       const data = await res.json();
       
-      if (data.isFree && data.downloadUrl) {
-         window.location.href = data.downloadUrl;
+      if (data.isFree) {
+         window.location.href = '/thank-you?status=free';
          return;
       }
 
@@ -135,7 +135,7 @@ export default function Home() {
           });
           const verifyData = await verifyRes.json();
           if (verifyData.success) {
-            window.location.href = verifyData.downloadUrl;
+            window.location.href = `/thank-you?payment_id=${encodeURIComponent(response.razorpay_payment_id || '')}&order_id=${encodeURIComponent(response.razorpay_order_id || '')}`;
           } else {
             alert("Payment verification failed: " + (verifyData.error || 'Please contact support'));
             btn.innerText = originalText;
@@ -183,7 +183,7 @@ export default function Home() {
       </nav>
 
       {/* --- HERO SECTION --- (White Background) */}
-      <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 bg-white overflow-hidden border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+      <section className="relative lg:sticky lg:top-0 lg:min-h-screen pt-28 pb-16 lg:pt-36 lg:pb-24 bg-white overflow-hidden border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)] z-10 flex flex-col justify-center">
         {/* Soft decorative color washes */}
         <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-golden/40 rounded-full blur-[100px] pointer-events-none"></div>
         <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-ivory/60 rounded-full blur-[100px] pointer-events-none"></div>
@@ -256,7 +256,7 @@ export default function Home() {
       </section>
 
       {/* --- SOCIAL PROOF LOGOS (Centered) --- */}
-      <section className="py-16 bg-white relative border-y border-black/5 flex flex-col items-center justify-center text-center">
+      <section className="py-12 lg:py-16 bg-white relative border-y border-black/5 flex flex-col items-center justify-center text-center z-20">
         <div className="max-w-6xl mx-auto px-6 w-full flex flex-col items-center justify-center">
           <p className="text-xs font-semibold text-brown uppercase tracking-widest mb-8 text-center">
             Build using industry-leading No-Code tools
@@ -272,7 +272,7 @@ export default function Home() {
       </section>
 
       {/* --- THE AGITATION --- */}
-      <section className="py-24 min-h-screen flex flex-col justify-center bg-white  z-30 border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+      <section className="py-16 lg:py-24 relative lg:sticky lg:top-0 lg:min-h-screen flex flex-col justify-center bg-white z-30 border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
         <div className="absolute inset-0 bg-black/5 opacity-50"></div>
         <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={stagger}>
@@ -310,7 +310,7 @@ export default function Home() {
       </section>
 
       {/* --- WHAT'S INSIDE --- */}
-      <section className="py-24 min-h-screen flex flex-col justify-center bg-white overflow-hidden  z-40 border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+      <section className="py-16 lg:py-24 relative lg:sticky lg:top-0 lg:min-h-screen flex flex-col justify-center bg-white overflow-hidden z-40 border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
         <div className="max-w-6xl mx-auto px-6 relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-20">
             <h2 className="text-4xl md:text-5xl font-serif text-navy mb-6">Everything you need to launch.</h2>
@@ -345,7 +345,7 @@ export default function Home() {
       </section>
 
       {/* --- SNEAK PEEK --- */}
-      <section className="py-24 min-h-screen flex flex-col justify-center bg-white  z-50 border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+      <section className="py-16 lg:py-24 relative lg:sticky lg:top-0 lg:min-h-screen flex flex-col justify-center bg-white z-50 border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto mb-20">
             <h2 className="text-4xl md:text-5xl font-serif text-navy mb-6">A peek inside the playbook.</h2>
@@ -388,7 +388,7 @@ export default function Home() {
       </section>
 
       {/* --- PRICING SECTION --- */}
-      <section id="pricing" className="py-32 min-h-screen flex flex-col justify-center bg-white  z-60 border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+      <section id="pricing" className="py-16 lg:py-32 relative lg:sticky lg:top-0 lg:min-h-screen flex flex-col justify-center bg-white z-[60] border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
         <div className="absolute inset-0 bg-black/5 opacity-10"></div>
         <div className="max-w-5xl mx-auto px-6 relative z-10">
           <motion.div 
@@ -436,80 +436,8 @@ export default function Home() {
                   />
                   
                   <button 
-                    onClick={async () => {
-                      try {
-                        const btn = document.getElementById("buyBtn") as HTMLButtonElement;
-                        btn.innerText = "Processing...";
-                        btn.disabled = true;
-                        
-                        const coupon = (document.getElementById("couponCode") as HTMLInputElement).value.toLowerCase();
-                        
-                        // 1. Create order
-                        const res = await fetch('/api/order', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ amount: 99, coupon })
-                        });
-                        const data = await res.json();
-                        
-                        if (data.isFree && data.downloadUrl) {
-                           window.location.href = data.downloadUrl;
-                           return;
-                        }
-
-                        if (!data.success) {
-                           alert('Failed to create order');
-                           btn.innerText = "Buy Now";
-                           btn.disabled = false;
-                           return;
-                        }
-
-                        // 2. Open Razorpay Widget
-                        const options = {
-                          key: "rzp_live_TUpX0sFML2vjqy",
-                          amount: data.amount,
-                          currency: data.currency,
-                          name: "No Code Founder",
-                          description: "30 Micro SaaS Playbook",
-                          order_id: data.orderId,
-                          handler: async function (response: any) {
-                            btn.innerText = "Verifying...";
-                            const verifyRes = await fetch('/api/verify', {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({
-                                razorpay_order_id: response.razorpay_order_id,
-                                razorpay_payment_id: response.razorpay_payment_id,
-                                razorpay_signature: response.razorpay_signature,
-                              })
-                            });
-                            const verifyData = await verifyRes.json();
-                            if (verifyData.success) {
-                              window.location.href = verifyData.downloadUrl;
-                            } else {
-                              alert("Payment verification failed");
-                              btn.innerText = "Buy Now";
-                              btn.disabled = false;
-                            }
-                          },
-                          theme: { color: "#F2CAD5" }
-                        };
-                        const rzp = new (window as any).Razorpay(options);
-                        rzp.open();
-                        
-                        rzp.on('payment.failed', function () {
-                           btn.innerText = "Buy Now";
-                           btn.disabled = false;
-                        });
-                      } catch (err) {
-                        console.error(err);
-                        alert("An error occurred");
-                        const btn = document.getElementById("buyBtn") as HTMLButtonElement;
-                        btn.innerText = "Buy Now";
-                        btn.disabled = false;
-                      }
-                    }}
                     id="buyBtn"
+                    onClick={() => handleCheckout("buyBtn")}
                     className="bg-white block w-full text-black border border-black/10 font-bold py-4 px-6 rounded-2xl shadow-xl shadow-black/5 transition-all text-xl mt-2 hover:-translate-y-1 hover:brightness-105 disabled:opacity-70 disabled:hover:translate-y-0 cursor-pointer"
                   >
                     Buy Now
@@ -525,7 +453,7 @@ export default function Home() {
       </section>
 
       {/* --- FOOTER --- */}
-      <footer className="bg-white text-center relative z-70 border-t border-black/5 py-12 pb-24 md:pb-12">
+      <footer className="bg-white text-center relative z-[70] border-t border-black/5 py-12 pb-24 md:pb-12">
         <p className="text-brown/70 font-light text-sm tracking-wide">
           © {new Date().getFullYear()} No Code Founder. Build something beautiful.
         </p>
