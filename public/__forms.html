@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Netlify Forms</title>
+  </head>
+  <body>
+    <!-- 
+      This is a dummy static HTML file just so Netlify's build bots can discover 
+      the forms and register them in the backend. In Next.js App Router, placing 
+      data-netlify="true" inside JSX causes build crashes.
+    -->
+    <form name="booking" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="text" name="company" />
+      <input type="checkbox" name="services[]" />
+      <textarea name="comments"></textarea>
+      <input type="text" name="bot-field" />
+    </form>
+  </body>
+</html>

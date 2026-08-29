@@ -276,8 +276,6 @@ export default function Home() {
               <form 
                 name="booking" 
                 method="POST" 
-                data-netlify="true" 
-                netlify-honeypot="bot-field"
                 action="/thank-you?status=free"
                 className="space-y-8"
               >
