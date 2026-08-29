@@ -7,3 +7,8 @@
     scroll-behavior: smooth;
   }
 }
+
+/* Hide Netlify Badge */
+.nl-wrap {
+  display: none !important;
+}

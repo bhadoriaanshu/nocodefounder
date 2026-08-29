@@ -276,7 +276,24 @@ export default function Home() {
               <form 
                 name="booking" 
                 method="POST" 
-                action="/thank-you?status=free"
+                data-netlify="true"
+                netlify-honeypot="bot-field"
+                action="/booking-success"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  const form = e.currentTarget;
+                  const formData = new FormData(form);
+                  try {
+                    await fetch("/", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                      body: new URLSearchParams(formData as any).toString(),
+                    });
+                    window.location.href = "/booking-success";
+                  } catch (error) {
+                    console.error("Form submission error", error);
+                  }
+                }}
                 className="space-y-8"
               >
                 <input type="hidden" name="form-name" value="booking" />
