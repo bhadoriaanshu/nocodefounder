@@ -1,15 +1,46 @@
 import Link from "next/link";
 import { blogs } from "../../data/blogs";
 import { ArrowRight, ArrowLeft } from "lucide-react";
+import type { Metadata } from "next";
 
-export const metadata = {
-  title: "Blog | No Code Founder - Web Development & Marketing Insights",
-  description: "Read the latest insights on Website Development, CRM/ERP integration, and ROI-driven Digital Marketing strategies."
+export const metadata: Metadata = {
+  title: "Blog | Web Development & Marketing Insights",
+  description: "Read the latest insights on Website Development, CRM/ERP integration, and ROI-driven Digital Marketing strategies for the USA, GCC, and India.",
+  alternates: {
+    canonical: "/blog",
+  },
+  openGraph: {
+    url: "/blog",
+    title: "Blog | No Code Founder - Web Development & Marketing Insights",
+    description: "Read the latest insights on Website Development, CRM/ERP integration, and ROI-driven Digital Marketing strategies for the USA, GCC, and India.",
+    type: "website",
+  },
+};
+
+const BASE_URL = "https://nocodefounder.site";
+
+const blogListJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "@id": `${BASE_URL}/blog/#blog`,
+  name: "No Code Founder Blog",
+  url: `${BASE_URL}/blog`,
+  blogPost: blogs.map((blog) => ({
+    "@type": "BlogPosting",
+    headline: blog.title,
+    url: `${BASE_URL}/blog/${blog.slug}`,
+    datePublished: blog.date,
+    description: blog.excerpt,
+  })),
 };
 
 export default function BlogIndex() {
   return (
     <div className="min-h-screen bg-white font-sans text-navy pt-28 pb-16 selection:bg-magenta selection:text-ivory">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListJsonLd) }}
+      />
       <nav className="fixed top-0 inset-x-0 z-50 bg-white/60 backdrop-blur-xl border-b border-white/40 shadow-sm">
         <div className="max-w-6xl mx-auto px-6 h-[75px] flex items-center justify-between">
           <Link href="/" className="font-serif font-bold text-2xl tracking-tight text-black flex items-center gap-2">
