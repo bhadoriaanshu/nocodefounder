@@ -17,10 +17,10 @@ const BASE_URL = "https://nocodefounder.site";
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "No Code Founder | Custom Web Development, CRM, ERP & SEO Agency",
+    default: "No Code Founder | Scale Your Business with Custom Tech",
     template: "%s | No Code Founder",
   },
-  description: "Top-tier Web Development, Custom CRM & ERP solutions, and ROI-driven Digital Marketing (SEO, Google Ads, Facebook Ads) for businesses in the USA, GCC, and India.",
+  description: "Scale your business with custom Web Development, CRM/ERP software, and ROI-driven SEO, Google & Facebook Ads for the USA, GCC and India.",
   keywords: ["Website Development", "CRM Development", "ERP Solutions", "SEO Agency", "GEO AIO", "Google Ads Agency", "Facebook Ads Agency", "USA", "GCC", "Dubai", "India", "Software Agency"],
   applicationName: "No Code Founder",
   authors: [{ name: "No Code Founder" }],
@@ -50,13 +50,13 @@ export const metadata: Metadata = {
     siteName: "No Code Founder",
     locale: "en_US",
     images: [{ url: "/new-cover.png", width: 1200, height: 630, alt: "No Code Founder - Web Development, CRM, ERP & Digital Marketing Agency" }],
-    title: "No Code Founder | Custom Web Development & Marketing",
-    description: "Scale your business with our Custom Web Development, CRM, ERP, and Digital Marketing services tailored for the USA, GCC, and Indian markets."
+    title: "No Code Founder | Scale Your Business with Custom Tech",
+    description: "Scale your business with custom Web Development, CRM/ERP software, and ROI-driven SEO, Google & Facebook Ads for the USA, GCC and India."
   },
   twitter: {
     card: "summary_large_image",
-    title: "No Code Founder | Custom Web Development & Marketing",
-    description: "Scale your business with our Custom Web Development, CRM, ERP, and Digital Marketing services tailored for the USA, GCC, and Indian markets.",
+    title: "No Code Founder | Scale Your Business with Custom Tech",
+    description: "Scale your business with custom Web Development, CRM/ERP software, and ROI-driven SEO, Google & Facebook Ads for the USA, GCC and India.",
     images: ["/new-cover.png"]
   }
 };
