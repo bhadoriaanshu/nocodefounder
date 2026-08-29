@@ -13,9 +13,14 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://nocodefounder.site"),
   title: "No Code Founder | Launch a Micro SaaS Without Coding",
   description: "Stop overthinking your ideas. Get 30 actionable Micro SaaS blueprints, the exact no-code stacks to build them, and a 4-week sprint to your first paying customer.",
   openGraph: {
+    images: ["/new-cover.png"]
+  },
+  twitter: {
+    card: "summary_large_image",
     images: ["/new-cover.png"]
   }
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { 
   CheckCircle2, 
@@ -15,15 +15,31 @@ import {
 
 function ThankYouContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const paymentId = searchParams.get("payment_id");
   const orderId = searchParams.get("order_id");
   const status = searchParams.get("status");
   const isFree = status === "free";
+  
+  const isValidPayment = paymentId || orderId || isFree;
 
   const [downloadStarted, setDownloadStarted] = useState(false);
   const [purchaseDate, setPurchaseDate] = useState("");
 
   useEffect(() => {
+    if (!isValidPayment) {
+      router.push("/");
+      return;
+    }
+
+    // Fire Meta Pixel Purchase event
+    if (typeof window !== "undefined" && (window as any).fbq) {
+      (window as any).fbq('track', 'Purchase', {
+        value: isFree ? 0.00 : 99.00,
+        currency: 'INR'
+      });
+    }
+
     // Set formatted client date
     const now = new Date();
     setPurchaseDate(
@@ -48,13 +64,17 @@ function ThankYouContent() {
     }, 800);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [isValidPayment, router, isFree]);
 
   const handlePrint = () => {
     if (typeof window !== "undefined") {
       window.print();
     }
   };
+
+  if (!isValidPayment) {
+    return null;
+  }
 
   const invoiceNumber = orderId 
     ? `NCF-${orderId.replace("order_", "").toUpperCase()}`
