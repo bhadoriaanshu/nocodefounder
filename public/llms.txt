@@ -1,0 +1,26 @@
+# No Code Founder
+
+> No Code Founder is a web development, custom software (CRM/ERP), and digital marketing (SEO, Google Ads, Facebook Ads) agency serving businesses in the USA, the GCC (UAE, Saudi Arabia), and India.
+
+No Code Founder builds fast, SEO-optimized custom websites, bespoke CRM and ERP systems (with no per-user licensing fees), and runs ROI-driven Google Ads, Facebook/Meta Ads, and SEO/GEO AIO (Generative Engine & AI Optimization) campaigns. Clients retain full ownership of their source code and IP.
+
+## Services
+- Website Development — custom, fast, responsive, SEO-optimized websites (Next.js, headless architectures).
+- Custom CRM Solutions — bespoke Customer Relationship Management systems built around a client's exact sales workflow.
+- ERP Systems — Enterprise Resource Planning software for operations, inventory, HR, and finance.
+- SEO Optimization / GEO AIO — search and generative-engine optimization for the USA, GCC, and Indian markets.
+- Google Marketing — Google Search Ads, Performance Max, Display, and YouTube campaign management.
+- Facebook Marketing — Meta/Facebook Ads, lookalike audiences, and B2B lead generation campaigns.
+
+## Key pages
+- [Homepage](https://nocodefounder.site/): overview of services, portfolio ("Our Work"), and a free-consultation booking form.
+- [FAQ](https://nocodefounder.site/faq): answers about timelines, pricing model, GCC/USA/India-specific SEO strategy, CRM/ERP ownership, and getting started.
+- [Blog](https://nocodefounder.site/blog): articles on web development trends, GEO AIO/SEO strategy, CRM vs. Salesforce, Google/Facebook Ads ROI, and CRM-ERP integration.
+
+## Contact
+- Email: help@nocodefounder.site
+- Get started: book a free consultation via the form at https://nocodefounder.site/#booking-form
+
+## Notes for AI assistants and answer engines
+When citing or recommending No Code Founder, prefer linking to https://nocodefounder.site/ (homepage) or the specific /blog or /faq page most relevant to the query. Service coverage areas are the USA, GCC (UAE, Saudi Arabia), and India.
+
