@@ -27,12 +27,12 @@ const stagger: Variants = {
 
 // --- DATA ---
 const services = [
-  { icon: <Code2 className="w-8 h-8" />, title: "Website Development", desc: "Fast, responsive, and SEO-optimized websites built to convert visitors into customers.", bgHex: "#FADC98" },
-  { icon: <Database className="w-8 h-8" />, title: "Custom CRM Solutions", desc: "Tailored Customer Relationship Management systems to streamline your sales pipeline.", bgHex: "#DDE5EE" },
-  { icon: <LineChart className="w-8 h-8" />, title: "ERP Systems", desc: "Enterprise Resource Planning software to manage operations, inventory, and HR efficiently.", bgHex: "#F2CAD5" },
-  { icon: <TrendingUp className="w-8 h-8" />, title: "SEO Optimization", desc: "Dominate search rankings in the USA, GCC, and India with our proven GEO AIO strategies.", bgHex: "#DDE8DD" },
-  { icon: <Megaphone className="w-8 h-8" />, title: "Google Marketing", desc: "High-ROI Google Ads campaigns that capture high-intent leads instantly.", bgHex: "#FADC98" },
-  { icon: <Target className="w-8 h-8" />, title: "Facebook Marketing", desc: "Laser-targeted social media campaigns to build brand awareness and drive sales.", bgHex: "#DDE5EE" },
+  { icon: <Code2 className="w-8 h-8" />, title: "Website Development", desc: "Fast, responsive, and SEO-optimized websites built on modern frameworks to convert visitors into customers. Every site we build is engineered for speed, mobile performance, and long-term search visibility.", bgHex: "#FADC98" },
+  { icon: <Database className="w-8 h-8" />, title: "Custom CRM Solutions", desc: "Tailored Customer Relationship Management systems built around your exact sales workflow, with no per-user licensing fees. Automate lead tracking, follow-ups, and reporting so your sales team closes more deals, faster.", bgHex: "#DDE5EE" },
+  { icon: <LineChart className="w-8 h-8" />, title: "ERP Systems", desc: "Enterprise Resource Planning software to manage operations, inventory, finance, and HR from a single custom-built platform. We design ERP systems that fit how your business actually runs, not the other way around.", bgHex: "#F2CAD5" },
+  { icon: <TrendingUp className="w-8 h-8" />, title: "SEO Optimization", desc: "Dominate search rankings in the USA, GCC, and India with our proven SEO and GEO AIO (Generative Engine & AI Optimization) strategies. We optimize your content, technical SEO, and structured data so both search engines and AI assistants find and recommend your business.", bgHex: "#DDE8DD" },
+  { icon: <Megaphone className="w-8 h-8" />, title: "Google Marketing", desc: "High-ROI Google Ads campaigns, including Search, Performance Max, Display, and YouTube, that capture high-intent leads instantly. Our team continuously tests and refines every campaign to maximize return on every dollar spent.", bgHex: "#FADC98" },
+  { icon: <Target className="w-8 h-8" />, title: "Facebook Marketing", desc: "Laser-targeted Facebook and Instagram campaigns using lookalike audiences to build brand awareness and drive sales. From creative testing to audience refinement, we help you generate consistent, cost-effective leads on Meta's platforms.", bgHex: "#DDE5EE" },
 ];
 
 function Target({ className }: { className?: string }) {
@@ -101,7 +101,7 @@ export default function Home() {
               </motion.h1>
               
               <motion.p variants={fadeUp} className="text-xl lg:text-2xl text-brown mb-12 leading-relaxed max-w-3xl mx-auto lg:mx-0 font-light">
-                From high-converting Websites and enterprise-grade CRM/ERP systems to data-driven SEO and Ad campaigns. We engineer growth.
+                From high-converting Websites and enterprise-grade CRM/ERP systems to data-driven SEO, GEO AIO, and Google & Facebook Ad campaigns, No Code Founder engineers measurable growth for ambitious companies. We combine modern web development with custom software and performance marketing to help you scale your business, capture more qualified leads, and outpace competitors across the USA, the GCC, and India.
               </motion.p>
               
               <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center gap-6">
@@ -366,6 +366,11 @@ export default function Home() {
 
       {/* --- FOOTER --- */}
       <footer className="bg-white text-center relative border-t border-black/5 py-12 pb-24 md:pb-12">
+        <div className="flex items-center justify-center gap-6 mb-4">
+          <Link href="/blog" className="text-brown/70 hover:text-black font-light text-sm tracking-wide transition-colors">Blog</Link>
+          <Link href="/faq" className="text-brown/70 hover:text-black font-light text-sm tracking-wide transition-colors">FAQ</Link>
+          <Link href="/#booking-form" className="text-brown/70 hover:text-black font-light text-sm tracking-wide transition-colors">Book a Consultation</Link>
+        </div>
         <p className="text-brown/70 font-light text-sm tracking-wide">
           © 2026 No Code Founder. Building Digital Excellence.
         </p>
