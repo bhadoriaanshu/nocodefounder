@@ -83,7 +83,7 @@ export default function FAQPage() {
                 className="w-full text-left px-6 py-5 flex items-center justify-between font-serif text-lg text-black focus:outline-none"
               >
                 <span>{faq.q}</span>
-                <ChevronDown className={\`w-5 h-5 transition-transform duration-300 \${openIndex === index ? 'rotate-180' : ''}\`} />
+                <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`} />
               </button>
               <AnimatePresence>
                 {openIndex === index && (

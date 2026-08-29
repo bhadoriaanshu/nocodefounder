@@ -36,8 +36,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${outfit.variable} ${playfair.variable} font-sans antialiased text-navy`}>
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <body className={`${outfit.variable} ${playfair.variable} font-sans antialiased text-navy`} suppressHydrationWarning>
         <Script id="fb-pixel" strategy="afterInteractive">
           {`
             !function(f,b,e,v,n,t,s)
@@ -52,15 +52,7 @@ export default function RootLayout({
             fbq('track', 'PageView');
           `}
         </Script>
-        <noscript>
-          <img 
-            height="1" 
-            width="1" 
-            style={{ display: "none" }}
-            src="https://www.facebook.com/tr?id=1456342243003290&ev=PageView&noscript=1"
-            alt=""
-          />
-        </noscript>
+
         {children}
       </body>
     </html>

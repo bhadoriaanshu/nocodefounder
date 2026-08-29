@@ -10,7 +10,8 @@ import {
   Megaphone,
   ArrowRight,
   ShieldCheck,
-  CheckCircle2
+  CheckCircle2,
+  ExternalLink
 } from "lucide-react";
 import Link from "next/link";
 
@@ -77,7 +78,7 @@ export default function Home() {
       </nav>
 
       {/* --- HERO SECTION --- */}
-      <section className="relative lg:sticky lg:top-0 lg:min-h-screen pt-28 pb-16 lg:pt-36 lg:pb-24 bg-white overflow-hidden border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)] z-10 flex flex-col justify-center">
+      <section className="relative min-h-screen pt-28 pb-16 lg:pt-36 lg:pb-24 bg-white overflow-hidden border-t border-black/5 flex flex-col justify-center">
         <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-golden/40 rounded-full blur-[100px] pointer-events-none"></div>
         <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-ivory/60 rounded-full blur-[100px] pointer-events-none"></div>
 
@@ -92,14 +93,14 @@ export default function Home() {
                 <span className="text-brown text-xs font-semibold tracking-wider uppercase">USA • GCC • INDIA</span>
               </motion.div>
               
-              <motion.h1 variants={fadeUp} className="text-5xl lg:text-7xl font-serif text-navy tracking-tight mb-6 leading-[1.05]">
+              <motion.h1 variants={fadeUp} className="text-6xl lg:text-8xl font-serif text-navy tracking-tight mb-8 leading-[1.05]">
                 Scale Your Business with <br className="hidden lg:block"/>
                 <span className="italic text-magenta">
                   Custom Tech & Marketing.
                 </span>
               </motion.h1>
               
-              <motion.p variants={fadeUp} className="text-lg lg:text-xl text-brown mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light">
+              <motion.p variants={fadeUp} className="text-xl lg:text-2xl text-brown mb-12 leading-relaxed max-w-3xl mx-auto lg:mx-0 font-light">
                 From high-converting Websites and enterprise-grade CRM/ERP systems to data-driven SEO and Ad campaigns. We engineer growth.
               </motion.p>
               
@@ -107,10 +108,10 @@ export default function Home() {
                 <button 
                   onClick={handleScrollToForm}
                   style={{ backgroundColor: "#F2CAD5" }}
-                  className="w-full sm:w-auto text-black border border-black/10 font-medium text-lg py-4 px-8 rounded-2xl flex items-center justify-center shadow-xl shadow-black/5 transition-all hover:-translate-y-1 hover:brightness-105 cursor-pointer"
+                  className="w-full sm:w-auto text-black border border-black/10 font-medium text-xl py-5 px-10 rounded-2xl flex items-center justify-center shadow-xl shadow-black/5 transition-all hover:-translate-y-1 hover:brightness-105 cursor-pointer"
                 >
                   Book a Free Consultation
-                  <ArrowRight className="ml-2 w-5 h-5" />
+                  <ArrowRight className="ml-3 w-6 h-6" />
                 </button>
               </motion.div>
             </motion.div>
@@ -122,26 +123,58 @@ export default function Home() {
               className="lg:w-1/2 relative"
             >
               <div className="absolute inset-0 bg-golden/30 blur-3xl rounded-full translate-y-10 translate-x-5 opacity-60"></div>
-              <motion.div 
-                animate={{ y: [-15, 15, -15] }}
-                transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-                className="relative bg-white p-8 rounded-3xl shadow-2xl border border-black/5"
-              >
-                 <div className="flex flex-col gap-6">
-                    <div className="flex items-center gap-4 border-b border-black/5 pb-4">
-                       <div className="w-12 h-12 rounded-full bg-[#FADC98] flex items-center justify-center"><Code2 className="w-6 h-6 text-black"/></div>
-                       <div><h3 className="font-bold text-navy">Web Development</h3><p className="text-sm text-brown">Next-gen performance</p></div>
-                    </div>
-                    <div className="flex items-center gap-4 border-b border-black/5 pb-4">
-                       <div className="w-12 h-12 rounded-full bg-[#DDE5EE] flex items-center justify-center"><Database className="w-6 h-6 text-black"/></div>
-                       <div><h3 className="font-bold text-navy">Custom CRM/ERP</h3><p className="text-sm text-brown">Automate your operations</p></div>
-                    </div>
-                    <div className="flex items-center gap-4">
-                       <div className="w-12 h-12 rounded-full bg-[#F2CAD5] flex items-center justify-center"><TrendingUp className="w-6 h-6 text-black"/></div>
-                       <div><h3 className="font-bold text-navy">Growth Marketing</h3><p className="text-sm text-brown">SEO, Google & FB Ads</p></div>
-                    </div>
-                 </div>
-              </motion.div>
+              
+              <div className="relative flex flex-col gap-6">
+                
+                {/* Card 1 */}
+                <motion.div 
+                  animate={{ y: [-10, 10, -10] }}
+                  transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+                  whileHover={{ scale: 1.05, x: 10 }}
+                  className="bg-white p-6 sm:p-8 rounded-[2rem] shadow-xl border border-black/5 flex items-center gap-6 cursor-pointer group w-[90%] md:w-[80%]"
+                >
+                   <div className="w-16 h-16 shrink-0 rounded-2xl bg-[#FADC98] flex items-center justify-center shadow-inner group-hover:bg-magenta group-hover:text-white transition-colors duration-300">
+                     <Code2 className="w-8 h-8 transition-colors"/>
+                   </div>
+                   <div>
+                     <h3 className="font-serif font-bold text-2xl text-navy group-hover:text-magenta transition-colors">Web Development</h3>
+                     <p className="text-base text-brown/80 font-medium">Next-gen performance</p>
+                   </div>
+                </motion.div>
+
+                {/* Card 2 */}
+                <motion.div 
+                  animate={{ y: [-15, 15, -15] }}
+                  transition={{ repeat: Infinity, duration: 7, ease: "easeInOut", delay: 1 }}
+                  whileHover={{ scale: 1.05, x: 10 }}
+                  className="bg-white p-6 sm:p-8 rounded-[2rem] shadow-xl border border-black/5 flex items-center gap-6 cursor-pointer group self-end w-[90%] md:w-[80%]"
+                >
+                   <div className="w-16 h-16 shrink-0 rounded-2xl bg-[#DDE5EE] flex items-center justify-center shadow-inner group-hover:bg-magenta group-hover:text-white transition-colors duration-300">
+                     <Database className="w-8 h-8 transition-colors"/>
+                   </div>
+                   <div>
+                     <h3 className="font-serif font-bold text-2xl text-navy group-hover:text-magenta transition-colors">Custom CRM/ERP</h3>
+                     <p className="text-base text-brown/80 font-medium">Automate your operations</p>
+                   </div>
+                </motion.div>
+
+                {/* Card 3 */}
+                <motion.div 
+                  animate={{ y: [-12, 12, -12] }}
+                  transition={{ repeat: Infinity, duration: 8, ease: "easeInOut", delay: 2 }}
+                  whileHover={{ scale: 1.05, x: 10 }}
+                  className="bg-white p-6 sm:p-8 rounded-[2rem] shadow-xl border border-black/5 flex items-center gap-6 cursor-pointer group w-[90%] md:w-[80%] ml-4 md:ml-12"
+                >
+                   <div className="w-16 h-16 shrink-0 rounded-2xl bg-[#F2CAD5] flex items-center justify-center shadow-inner group-hover:bg-magenta group-hover:text-white transition-colors duration-300">
+                     <TrendingUp className="w-8 h-8 transition-colors"/>
+                   </div>
+                   <div>
+                     <h3 className="font-serif font-bold text-2xl text-navy group-hover:text-magenta transition-colors">Growth Marketing</h3>
+                     <p className="text-base text-brown/80 font-medium">SEO, Google & FB Ads</p>
+                   </div>
+                </motion.div>
+
+              </div>
             </motion.div>
             
           </div>
@@ -149,16 +182,16 @@ export default function Home() {
       </section>
 
       {/* --- SERVICES SECTION --- */}
-      <section className="py-16 lg:py-24 relative lg:sticky lg:top-0 lg:min-h-screen flex flex-col justify-center bg-white overflow-hidden z-40 border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+      <section className="py-16 lg:py-24 relative min-h-screen flex flex-col justify-center bg-white overflow-hidden border-t border-black/5">
         <div className="max-w-6xl mx-auto px-6 relative z-10">
-          <div className="text-center max-w-2xl mx-auto mb-20">
-            <h2 className="text-4xl md:text-5xl font-serif text-navy mb-6">Our Core Services</h2>
-            <p className="text-lg text-brown font-light">End-to-end solutions to digitize your operations and scale your revenue globally.</p>
+          <div className="text-center max-w-3xl mx-auto mb-24">
+            <h2 className="text-5xl md:text-6xl font-serif text-navy mb-8">Our Core Services</h2>
+            <p className="text-xl md:text-2xl text-brown font-light leading-relaxed">End-to-end solutions to digitize your operations and scale your revenue globally.</p>
           </div>
 
           <motion.div 
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={stagger}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-10"
           >
             {services.map((srv, i) => (
               <motion.div 
@@ -166,21 +199,64 @@ export default function Home() {
                 variants={fadeUp}
                 whileHover={{ scale: 1.02, y: -5 }}
                 style={{ backgroundColor: srv.bgHex }}
-                className="p-8 rounded-[2rem] shadow-xl flex flex-col cursor-pointer"
+                className="p-10 lg:p-12 rounded-[2.5rem] shadow-xl flex flex-col cursor-pointer"
               >
-                <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-black/10 text-black backdrop-blur-sm mb-6">
-                  {srv.icon}
+                <div className="w-20 h-20 rounded-3xl flex items-center justify-center bg-black/10 text-black backdrop-blur-sm mb-8 shrink-0">
+                   <div className="scale-150">
+                     {srv.icon}
+                   </div>
                 </div>
-                <h3 className="text-2xl font-serif text-black mb-3 font-normal">{srv.title}</h3>
-                <p className="text-black/80 leading-relaxed font-normal">{srv.desc}</p>
+                <h3 className="text-3xl font-serif text-black mb-4 font-normal">{srv.title}</h3>
+                <p className="text-black/80 leading-relaxed font-normal text-lg">{srv.desc}</p>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
+      {/* --- OUR WORK SECTION --- */}
+      <section className="py-16 lg:py-32 relative flex flex-col justify-center bg-cream/30 overflow-hidden border-t border-black/5">
+        <div className="max-w-6xl mx-auto px-6 relative z-10 w-full">
+          <div className="text-center max-w-3xl mx-auto mb-20">
+            <h2 className="text-5xl md:text-6xl font-serif text-navy mb-8">Our Work</h2>
+            <p className="text-xl md:text-2xl text-brown font-light leading-relaxed">A showcase of high-performance websites and digital platforms we have delivered.</p>
+          </div>
+
+          <motion.div 
+            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={stagger}
+            className="grid md:grid-cols-2 gap-10"
+          >
+            {[
+              { title: "FitnessCrunch", desc: "High-performance fitness tracking and gym management web application.", url: "https://fitnesscrunch.netlify.app/", color: "#F2CAD5" },
+              { title: "Durgs", desc: "E-commerce and inventory management solution for the pharmaceutical industry.", url: "https://durgs.netlify.app/", color: "#DDE5EE" },
+              { title: "Techalo", desc: "SaaS landing page and software presentation platform for tech startups.", url: "https://techalo.netlify.app/", color: "#FADC98" },
+              { title: "ClinicalPlus", desc: "Healthcare portal and patient management CRM for modern clinics.", url: "https://clincalplus.netlify.app/", color: "#DDE8DD" }
+            ].map((project, i) => (
+              <motion.a 
+                key={i}
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                variants={fadeUp}
+                whileHover={{ scale: 1.02, y: -5 }}
+                className="group relative p-10 lg:p-12 rounded-[2.5rem] shadow-xl flex flex-col overflow-hidden bg-white border border-black/5 block"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 opacity-20 rounded-bl-[100px] transition-colors duration-500" style={{ backgroundColor: project.color }}></div>
+                
+                <h3 className="text-4xl font-serif text-black mb-4 font-bold group-hover:text-magenta transition-colors relative z-10">{project.title}</h3>
+                <p className="text-black/70 leading-relaxed text-lg mb-10 relative z-10">{project.desc}</p>
+                
+                <div className="mt-auto inline-flex items-center gap-2 font-medium text-lg text-black group-hover:text-magenta transition-colors relative z-10">
+                  View Live Project <ExternalLink className="w-5 h-5" />
+                </div>
+              </motion.a>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
       {/* --- BOOKING FORM SECTION (NETLIFY FORMS) --- */}
-      <section id="booking-form" className="py-16 lg:py-32 relative flex flex-col justify-center bg-white z-[60] border-t border-black/5 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+      <section id="booking-form" className="py-16 lg:py-32 relative flex flex-col justify-center bg-white border-t border-black/5">
         <div className="absolute inset-0 bg-black/5 opacity-10"></div>
         <div className="max-w-4xl mx-auto px-6 relative z-10 w-full">
           <motion.div 
@@ -191,9 +267,9 @@ export default function Home() {
             className="bg-black rounded-[3rem] overflow-hidden shadow-2xl border border-white/10"
           >
             <div className="p-12 lg:p-16">
-              <div className="text-center mb-10">
-                <h2 className="text-4xl font-serif text-white mb-4">Book a Free Strategy Call</h2>
-                <p className="text-white/70 font-light text-lg">Tell us about your project and which services you need. We'll get back to you within 24 hours.</p>
+              <div className="text-center mb-14">
+                <h2 className="text-5xl lg:text-6xl font-serif text-white mb-6">Book a Free Strategy Call</h2>
+                <p className="text-white/80 font-light text-xl leading-relaxed max-w-2xl mx-auto">Tell us about your project and which services you need. We&apos;ll get back to you within 24 hours.</p>
               </div>
 
               {/* NETLIFY FORM */}
@@ -203,38 +279,38 @@ export default function Home() {
                 data-netlify="true" 
                 netlify-honeypot="bot-field"
                 action="/thank-you?status=free"
-                className="space-y-6"
+                className="space-y-8"
               >
                 <input type="hidden" name="form-name" value="booking" />
-                <p className="hidden">
-                  <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
-                </p>
+                <div className="hidden">
+                  <label>Don&apos;t fill this out if you&apos;re human: <input name="bot-field" /></label>
+                </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-white/80 text-sm font-medium">Full Name *</label>
-                    <input required type="text" name="name" className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-white/50" placeholder="John Doe" />
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-white/80 text-base font-medium">Full Name *</label>
+                    <input required type="text" name="name" className="w-full bg-white/10 border border-white/20 rounded-2xl px-5 py-4 text-lg text-white placeholder:text-white/40 focus:outline-none focus:border-white/50" placeholder="John Doe" />
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-white/80 text-sm font-medium">Email Address *</label>
-                    <input required type="email" name="email" className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-white/50" placeholder="john@company.com" />
+                  <div className="space-y-3">
+                    <label className="text-white/80 text-base font-medium">Email Address *</label>
+                    <input required type="email" name="email" className="w-full bg-white/10 border border-white/20 rounded-2xl px-5 py-4 text-lg text-white placeholder:text-white/40 focus:outline-none focus:border-white/50" placeholder="john@company.com" />
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-white/80 text-sm font-medium">Phone Number</label>
-                    <input type="tel" name="phone" className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-white/50" placeholder="+1 (555) 000-0000" />
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-white/80 text-base font-medium">Phone Number</label>
+                    <input type="tel" name="phone" className="w-full bg-white/10 border border-white/20 rounded-2xl px-5 py-4 text-lg text-white placeholder:text-white/40 focus:outline-none focus:border-white/50" placeholder="+1 (555) 000-0000" />
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-white/80 text-sm font-medium">Company Name</label>
-                    <input type="text" name="company" className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-white/50" placeholder="Your Company LLC" />
+                  <div className="space-y-3">
+                    <label className="text-white/80 text-base font-medium">Company Name</label>
+                    <input type="text" name="company" className="w-full bg-white/10 border border-white/20 rounded-2xl px-5 py-4 text-lg text-white placeholder:text-white/40 focus:outline-none focus:border-white/50" placeholder="Your Company LLC" />
                   </div>
                 </div>
 
-                <div className="space-y-3 pt-4">
-                  <label className="text-white/80 text-sm font-medium block border-b border-white/10 pb-2">Services Interested In</label>
-                  <div className="grid md:grid-cols-2 gap-3">
+                <div className="space-y-4 pt-6">
+                  <label className="text-white/80 text-base font-medium block border-b border-white/10 pb-3">Services Interested In</label>
+                  <div className="grid md:grid-cols-2 gap-4">
                     {[
                       "Website Development",
                       "CRM Solution",
@@ -243,28 +319,28 @@ export default function Home() {
                       "Google Marketing",
                       "Facebook Marketing"
                     ].map((service) => (
-                      <label key={service} className="flex items-center gap-3 cursor-pointer group">
-                        <input type="checkbox" name="services[]" value={service} className="w-5 h-5 rounded border-white/20 bg-white/10 text-magenta focus:ring-magenta focus:ring-offset-black accent-magenta" />
-                        <span className="text-white/80 group-hover:text-white transition-colors">{service}</span>
+                      <label key={service} className="flex items-center gap-4 cursor-pointer group">
+                        <input type="checkbox" name="services[]" value={service} className="w-6 h-6 rounded-md border-white/20 bg-white/10 text-magenta focus:ring-magenta focus:ring-offset-black accent-magenta cursor-pointer" />
+                        <span className="text-white/80 text-lg group-hover:text-white transition-colors">{service}</span>
                       </label>
                     ))}
                   </div>
                 </div>
 
-                <div className="space-y-2 pt-4">
-                  <label className="text-white/80 text-sm font-medium">Additional Comments</label>
-                  <textarea name="comments" rows={4} className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-white/50" placeholder="Tell us about your goals..."></textarea>
+                <div className="space-y-3 pt-6">
+                  <label className="text-white/80 text-base font-medium">Additional Comments</label>
+                  <textarea name="comments" rows={5} className="w-full bg-white/10 border border-white/20 rounded-2xl px-5 py-4 text-lg text-white placeholder:text-white/40 focus:outline-none focus:border-white/50" placeholder="Tell us about your goals..."></textarea>
                 </div>
 
-                <div className="pt-6">
+                <div className="pt-10">
                   <button 
                     type="submit"
-                    className="bg-white block w-full text-black border border-black/10 font-bold py-4 px-6 rounded-2xl shadow-xl shadow-black/5 transition-all text-xl hover:-translate-y-1 hover:brightness-105 cursor-pointer"
+                    className="bg-white block w-full text-black border border-black/10 font-bold py-5 px-8 rounded-2xl shadow-xl shadow-black/5 transition-all text-2xl hover:-translate-y-1 hover:brightness-105 cursor-pointer"
                   >
                     Submit Request
                   </button>
-                  <div className="flex items-center justify-center gap-2 text-white/50 text-sm font-medium mt-4">
-                    <ShieldCheck className="w-4 h-4 text-green" /> Your information is secure
+                  <div className="flex items-center justify-center gap-2 text-white/50 text-base font-medium mt-6">
+                    <ShieldCheck className="w-5 h-5 text-green" /> Your information is secure
                   </div>
                 </div>
               </form>
@@ -274,9 +350,9 @@ export default function Home() {
       </section>
 
       {/* --- FOOTER --- */}
-      <footer className="bg-white text-center relative z-[70] border-t border-black/5 py-12 pb-24 md:pb-12">
+      <footer className="bg-white text-center relative border-t border-black/5 py-12 pb-24 md:pb-12">
         <p className="text-brown/70 font-light text-sm tracking-wide">
-          © {new Date().getFullYear()} No Code Founder. Building Digital Excellence.
+          © 2026 No Code Founder. Building Digital Excellence.
         </p>
       </footer>
 
