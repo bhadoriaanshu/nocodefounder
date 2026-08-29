@@ -14,10 +14,13 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://nocodefounder.site"),
-  title: "No Code Founder | Launch a Micro SaaS Without Coding",
-  description: "Stop overthinking your ideas. Get 30 actionable Micro SaaS blueprints, the exact no-code stacks to build them, and a 4-week sprint to your first paying customer.",
+  title: "No Code Founder | Custom Web Development, CRM, ERP & SEO Agency",
+  description: "Top-tier Web Development, Custom CRM & ERP solutions, and ROI-driven Digital Marketing (SEO, Google Ads, Facebook Ads) for businesses in the USA, GCC, and India.",
+  keywords: ["Website Development", "CRM Development", "ERP Solutions", "SEO Agency", "Google Marketing", "Facebook Marketing", "USA", "GCC", "India", "Software Agency"],
   openGraph: {
-    images: ["/new-cover.png"]
+    images: ["/new-cover.png"],
+    title: "No Code Founder | Custom Web Development & Marketing",
+    description: "Scale your business with our Custom Web Development, CRM, ERP, and Digital Marketing services tailored for the USA, GCC, and Indian markets."
   },
   twitter: {
     card: "summary_large_image",
@@ -59,7 +62,6 @@ export default function RootLayout({
           />
         </noscript>
         {children}
-        <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
       </body>
     </html>
   );
