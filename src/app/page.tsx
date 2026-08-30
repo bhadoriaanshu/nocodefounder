@@ -283,16 +283,27 @@ export default function Home() {
                   e.preventDefault();
                   const form = e.currentTarget;
                   const formData = new FormData(form);
+                  const name = (formData.get("name") as string) || "";
+                  const email = (formData.get("email") as string) || "";
                   try {
                     await fetch("/__forms.html", {
                       method: "POST",
                       headers: { "Content-Type": "application/x-www-form-urlencoded" },
                       body: new URLSearchParams(formData as any).toString(),
                     });
-                    window.location.href = "/booking-success";
                   } catch (error) {
                     console.error("Form submission error", error);
                   }
+                  // Best-effort confirmation email — never blocks the redirect
+                  // even if Resend isn't configured yet or the request fails.
+                  fetch("/api/send-confirmation", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, email }),
+                  }).catch((error) => {
+                    console.error("Confirmation email request failed", error);
+                  });
+                  window.location.href = "/booking-success";
                 }}
                 className="space-y-8"
               >
