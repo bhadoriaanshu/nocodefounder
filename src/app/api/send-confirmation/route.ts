@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     const firstName = name.trim().split(/\s+/)[0] || "there";
 
     const { error } = await resend.emails.send({
-      from: "No Code Founder <help@nocodefounder.site>",
+      from: "No Code Founder <nocodefoundersite@gmail.com>",
       to: email,
       subject: "We've received your request — No Code Founder",
       html: `
