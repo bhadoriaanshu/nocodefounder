@@ -181,19 +181,19 @@ function ThankYouContent() {
               </div>
               <div>
                 <span className="text-black/50 text-xs uppercase tracking-wider block mb-1">Payment Method</span>
-                <span className="font-medium text-black">{isFree ? "Promo Code" : "Razorpay"}</span>
+                <span className="font-medium text-black">{isFree ? "Promo Code" : "Online Payment"}</span>
               </div>
               <div>
                 <span className="text-black/50 text-xs uppercase tracking-wider block mb-1">Payment ID</span>
                 <span className="font-mono font-semibold text-black text-xs break-all">
-                  {paymentId || (isFree ? "PROMO-100" : "rzp_verified")}
+                  {paymentId || (isFree ? "PROMO-100" : "txn_verified")}
                 </span>
               </div>
             </div>
 
             {orderId && (
               <div className="py-3 border-b border-black/5 text-xs text-black/60 flex items-center justify-between">
-                <span>Razorpay Order ID: <strong className="font-mono text-black/80">{orderId}</strong></span>
+                <span>Order ID: <strong className="font-mono text-black/80">{orderId}</strong></span>
                 <span className="flex items-center gap-1 text-[#6A9B68] font-medium"><ShieldCheck className="w-3.5 h-3.5" /> 256-Bit SSL Encrypted</span>
               </div>
             )}
