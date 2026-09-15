@@ -2,13 +2,13 @@ import { NextResponse } from 'next/server';
 import Razorpay from 'razorpay';
 import { cookies } from 'next/headers';
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
-
 export async function POST(req: Request) {
   try {
+    const razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID!,
+      key_secret: process.env.RAZORPAY_KEY_SECRET!,
+    });
+
     const { amount, coupon } = await req.json();
 
     // Check for 100% discount coupon
