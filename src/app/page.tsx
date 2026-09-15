@@ -227,10 +227,11 @@ export default function Home() {
             className="grid md:grid-cols-2 gap-10"
           >
             {[
-              { title: "FitnessCrunch", desc: "High-performance fitness tracking and gym management web application.", url: "https://fitnesscrunch.netlify.app/", color: "#F2CAD5" },
-              { title: "Durgs", desc: "E-commerce and inventory management solution for the pharmaceutical industry.", url: "https://durgs.netlify.app/", color: "#DDE5EE" },
-              { title: "Techalo", desc: "SaaS landing page and software presentation platform for tech startups.", url: "https://techalo.netlify.app/", color: "#FADC98" },
-              { title: "ClinicalPlus", desc: "Healthcare portal and patient management CRM for modern clinics.", url: "https://clincalplus.netlify.app/", color: "#DDE8DD" }
+              { title: "Om Infra", desc: "Corporate website and digital portfolio for a leading construction and infrastructure company.", url: "https://omindra.netlify.app/", color: "#F2CAD5" },
+              { title: "FitnessCrunch", desc: "High-performance fitness tracking and gym management web application.", url: "https://fitnesscrunch.netlify.app/", color: "#DDE5EE" },
+              { title: "Durgs", desc: "E-commerce and inventory management solution for the pharmaceutical industry.", url: "https://durgs.netlify.app/", color: "#FADC98" },
+              { title: "Techalo", desc: "SaaS landing page and software presentation platform for tech startups.", url: "https://techalo.netlify.app/", color: "#DDE8DD" },
+              { title: "ClinicalPlus", desc: "Healthcare portal and patient management CRM for modern clinics.", url: "https://clincalplus.netlify.app/", color: "#F2CAD5" }
             ].map((project, i) => (
               <motion.a 
                 key={i}
